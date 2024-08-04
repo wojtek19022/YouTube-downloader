@@ -4,6 +4,10 @@ import os
 import shutil
 import logging
 
+from constants import VERSION, AUTHOR, PROGRAM_NAME, LIBRARIES_USED
+
+def startup_info(PROGRAM_NAME, VERSION, AUTHOR):
+    logging.warning(f"\n{PROGRAM_NAME} - {VERSION}\nCreated by: {AUTHOR}\n\n")
 
 def on_progress(video_stream,total_size, bytes_remaining):
     total_size = video_stream.filesize
@@ -16,6 +20,7 @@ def on_finish(video_stream,total_size):
     logging.warning(f"\nPobrano pliku {file_title}" + ('\n' if file_title.endswith('video') else ''))
 
 def Download():
+    startup_info(PROGRAM_NAME, VERSION, AUTHOR)
     Czy_Tak = str(input("Czy chcesz pobierać pliki masowo? [Tak/Nie]: "))
     out = str(input(r"Ścieżka pod którą ma być zapisany plik: "))
 
