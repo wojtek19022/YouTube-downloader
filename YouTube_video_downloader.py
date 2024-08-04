@@ -12,7 +12,8 @@ def on_progress(video_stream,total_size, bytes_remaining):
     print("\r" + "▌" * int(percent) + " " * (100 - int(percent)) + " {}%".format(int(percent)), end='')
 
 def on_finish(video_stream,total_size):
-    pass
+    file_title = f"{video_stream.title} {'audio' if video_stream.includes_audio_track else 'video'}"
+    logging.warning(f"\nPobrano pliku {file_title} {'\n' if file_title.endswith('video') else ''}")
 
 def Download():
     Czy_Tak = str(input("Czy chcesz pobierać pliki masowo? [Tak/Nie]: "))
