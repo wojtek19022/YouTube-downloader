@@ -1,6 +1,6 @@
 from moviepy.editor import VideoFileClip, AudioFileClip
 from pytube.pytube import YouTube 
-from tqdm.tqdm import tqdm
+from tqdm import tqdm
 import os
 import logging
 
@@ -47,8 +47,6 @@ def Download():
                         delete_not_neccesary_file(video= video_path, audio= audio_path)
                         
                         logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
-                        logging.warning(f"Plik {video} zapisany")
-                        os.getpid()
 
                     except Exception as e:
                         print("An error has occurred", e, end="\n\n")
@@ -71,13 +69,6 @@ def Download():
                                 outname= merged_file_path, 
                                 fps=youtubeObject_video.fps,)
             delete_not_neccesary_file(video= video_path, audio= audio_path)
-
-            pbar = tqdm(total=youtubeObject_audio.filesize, unit="bytes")
-            pbar.close()
-            pbar = tqdm(total=youtubeObject_video.filesize, unit="bytes")
-            pbar.close()
-            logging.warning('\nPlik zapisany')
-            os.getpid()
 
         except Exception as e:
             print("\n\nAn error has occurred: ",e)
