@@ -12,7 +12,7 @@ import time
 from urllib import parse
 
 # Local imports
-from pytube import request
+from . import request
 
 # YouTube on TV client secrets
 _client_id = '861556708454-d6dlm3lh05idd8npek18k6be8ba3oc68.apps.googleusercontent.com'
@@ -220,7 +220,7 @@ _token_file = os.path.join(_cache_dir, 'tokens.json')
 
 class InnerTube:
     """Object for interacting with the innertube API."""
-    def __init__(self, client='ANDROID_MUSIC', use_oauth=False, allow_cache=True):
+    def __init__(self, client='ANDROID_MUSIC', use_oauth=True, allow_cache=True):
         """Initialize an InnerTube object.
 
         :param str client:

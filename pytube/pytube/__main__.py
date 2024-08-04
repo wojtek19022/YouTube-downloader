@@ -10,13 +10,16 @@ import logging
 from typing import Any, Callable, Dict, List, Optional
 
 import pytube
-import pytube.exceptions as exceptions
-from pytube import extract, request
-from pytube import Stream, StreamQuery
-from pytube.helpers import install_proxy
-from pytube.innertube import InnerTube
-from pytube.metadata import YouTubeMetadata
-from pytube.monostate import Monostate
+import pytube.pytube
+from .captions import Caption
+from . import exceptions
+from . import extract, request
+from .streams import Stream
+from .query import StreamQuery, CaptionQuery
+from .helpers import install_proxy
+from .innertube import InnerTube
+from .metadata import YouTubeMetadata
+from .monostate import Monostate
 
 logger = logging.getLogger(__name__)
 
@@ -135,12 +138,13 @@ class YouTube:
 
         # If the js_url doesn't match the cached url, fetch the new js and update
         #  the cache; otherwise, load the cache.
-        if pytube.__js_url__ != self.js_url:
+
+        if pytube.pytube.__js_url__ != self.js_url:
             self._js = request.get(self.js_url)
-            pytube.__js__ = self._js
-            pytube.__js_url__ = self.js_url
+            pytube.pytube.__js__ = self._js
+            pytube.pytube.__js_url__ = self.js_url
         else:
-            self._js = pytube.__js__
+            self._js = pytube.pytube.__js__
 
         return self._js
 
@@ -183,8 +187,8 @@ class YouTube:
             # To force an update to the js file, we clear the cache and retry
             self._js = None
             self._js_url = None
-            pytube.__js__ = None
-            pytube.__js_url__ = None
+            __js__ = None
+            __js_url__ = None
             extract.apply_signature(stream_manifest, self.vid_info, self.js)
 
         # build instances of :class:`Stream <Stream>`
@@ -250,7 +254,7 @@ class YouTube:
     def bypass_age_gate(self):
         """Attempt to update the vid_info by bypassing the age gate."""
         innertube = InnerTube(
-            client='ANDROID_EMBED',
+            client='WEB',
             use_oauth=self.use_oauth,
             allow_cache=self.allow_oauth_cache
         )
@@ -266,7 +270,7 @@ class YouTube:
         self._vid_info = innertube_response
 
     @property
-    def caption_tracks(self) -> List[pytube.Caption]:
+    def caption_tracks(self) -> List[Caption]:
         """Get a list of :class:`Caption <Caption>`.
 
         :rtype: List[Caption]
@@ -276,15 +280,15 @@ class YouTube:
             .get("playerCaptionsTracklistRenderer", {})
             .get("captionTracks", [])
         )
-        return [pytube.Caption(track) for track in raw_tracks]
+        return [Caption(track) for track in raw_tracks]
 
     @property
-    def captions(self) -> pytube.CaptionQuery:
+    def captions(self) -> CaptionQuery:
         """Interface to query caption tracks.
 
         :rtype: :class:`CaptionQuery <CaptionQuery>`.
         """
-        return pytube.CaptionQuery(self.caption_tracks)
+        return CaptionQuery(self.caption_tracks)
 
     @property
     def streams(self) -> StreamQuery:
