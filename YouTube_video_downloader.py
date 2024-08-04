@@ -2,6 +2,7 @@ from moviepy.editor import VideoFileClip, AudioFileClip
 from pytube.pytube import YouTube 
 from tqdm import tqdm
 import os
+import shutil
 import logging
 
 
@@ -46,13 +47,14 @@ def Download():
                                             audname= audio_path, 
                                             outname= merged_file_path, 
                                             fps=30,)
-                        delete_not_neccesary_file(video= video_path, audio= audio_path)
                         
                         logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
 
                     except Exception as e:
                         print("An error has occurred", e, end="\n\n")
                     logging.basicConfig(format='%(asctime)s %(message)s', datefmt='%m/%d/%Y %I:%M:%S %p')
+
+            remove_temp_dir(temp_dir)
 
     elif Czy_Tak.lower() == 'nie':
         http = str(input(r'Podaj ścieżkę pliku do pobrania z linkiem HTTPs: '))
@@ -70,7 +72,7 @@ def Download():
                                 audname= audio_path, 
                                 outname= merged_file_path, 
                                 fps=youtubeObject_video.fps,)
-            delete_not_neccesary_file(video= video_path, audio= audio_path)
+            remove_temp_dir(temp_dir)
 
         except Exception as e:
             print("\n\nAn error has occurred: ",e)
@@ -90,7 +92,7 @@ def create_temp_dir():
     return temp_dir
 
 def remove_temp_dir(temp_dir):
-    os.rmdir(temp_dir)
+    shutil.rmtree(temp_dir)
 
 def get_video_audio(youtubeObject):
     youtubeObject = youtubeObject.streams
@@ -121,13 +123,6 @@ def combine_video_audio(vidname, audname, outname, fps=30):
     audio_background = AudioFileClip(audname)
     final_clip = my_clip.set_audio(audio_background)
     final_clip.write_videofile(outname,fps=fps)
-
-def delete_not_neccesary_file(**kwargs):
-    for item in kwargs.values():
-        try:
-            os.remove(item)
-        except FileNotFoundError:
-            print("\nPlik został wcześniej usunięty", end="\n")
 
 if __name__ == "__main__":
     Download()
