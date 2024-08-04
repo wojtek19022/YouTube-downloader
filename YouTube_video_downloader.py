@@ -29,6 +29,7 @@ def Download():
                 print(line, sep=',', end='\n')
 
                 for video in videos:
+                    video = video.strip()
                     try:
                         youtubeObject = YouTube(video, 
                                                 on_progress_callback=on_progress,
