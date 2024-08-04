@@ -1,5 +1,5 @@
 from moviepy.editor import VideoFileClip, AudioFileClip
-from pytube import YouTube
+from pytube.pytube import YouTube 
 from tqdm import tqdm
 import os
 import logging
