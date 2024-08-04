@@ -3,7 +3,7 @@ This tool allows to download videos from a txt files with a specified structure 
 
 **WARNING** <br>
 In order to use script properly user have to type in below commmand: <br>
-```pip install moviepy``` 
+```pip install -r requirements.txt``` 
 
 Worklow to download videos from YouTube
 - First specify if you want to download multiple videos or not
