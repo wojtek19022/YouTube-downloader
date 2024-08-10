@@ -4,7 +4,8 @@ import os
 import shutil
 import logging
 
-from constants import VERSION, AUTHOR, PROGRAM_NAME, LIBRARIES_USED
+from constants import VERSION, AUTHOR, PROGRAM_NAME
+
 
 def startup_info(PROGRAM_NAME, VERSION, AUTHOR):
     logging.warning(f"\n{PROGRAM_NAME} - {VERSION}\nCreated by: {AUTHOR}\n\n")
